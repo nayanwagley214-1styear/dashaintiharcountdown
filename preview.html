@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Festival Countdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0f1115;color:#fff;font-family:Inter,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh}
+.container{text-align:center;width:min(900px,92%)}
+.tabs{display:flex;justify-content:space-between;margin-bottom:60px}
+.tab{font-size:2rem;font-weight:700;color:#666;cursor:pointer}
+.active{color:#ffd54f}.active:before{content:"[ "}.active:after{content:" ]"}
+.date{display:flex;justify-content:center;gap:70px;color:#bbb;font-size:1.6rem;margin-bottom:60px}
+.count{display:flex;justify-content:center;align-items:center;gap:18px}
+.num{font:700 4.5rem "JetBrains Mono",monospace;color:#ffd54f;width:110px}
+.colon{font-size:4rem;color:#666}
+.labels{display:grid;grid-template-columns:110px 18px 110px 18px 110px 18px 110px;justify-content:center;margin-top:10px;color:#888}
+.labels div{text-align:center}
+.footer{margin-top:70px;color:#666}
+@media(max-width:700px){
+.date{gap:18px;font-size:1rem}.tab{font-size:1.3rem}.num{width:60px;font-size:2.3rem}.colon{font-size:2rem}.labels{grid-template-columns:60px 8px 60px 8px 60px 8px 60px;font-size:.65rem}
+}
+</style>
+</head>
+<body><div class="container">
+<div class="tabs"><div id="dBtn" class="tab active">DASHAIN</div><div id="tBtn" class="tab">TIHAR</div></div>
+<div class="date"><div id="wd"></div><div id="md"></div><div id="yr"></div></div>
+<div class="count">
+<div id="days" class="num">00</div><div class="colon">:</div>
+<div id="hrs" class="num">00</div><div class="colon">:</div>
+<div id="min" class="num">00</div><div class="colon">:</div>
+<div id="sec" class="num">00</div>
+</div>
+<div class="labels">
+<div>Days</div><div></div><div>Hours</div><div></div><div>Minutes</div><div></div><div>Seconds</div>
+</div>
+<div class="footer">Made with ❤️ by <b>Nayan Wagle</b></div>
+</div>
+<script>
+const f={dashain:new Date("2026-10-19T00:00:00"),tihar:new Date("2026-11-08T00:00:00")};
+let cur="dashain";
+const dBtn=document.getElementById("dBtn"),tBtn=document.getElementById("tBtn");
+function sel(x){cur=x;dBtn.classList.toggle("active",x==="dashain");tBtn.classList.toggle("active",x==="tihar");}
+dBtn.onclick=()=>sel("dashain");tBtn.onclick=()=>sel("tihar");
+function upd(){
+const t=f[cur],n=new Date(),diff=Math.max(0,Math.floor((t-n)/1000));
+const d=Math.floor(diff/86400),h=Math.floor(diff%86400/3600),m=Math.floor(diff%3600/60),s=diff%60;
+days.textContent=d;hrs.textContent=String(h).padStart(2,"0");min.textContent=String(m).padStart(2,"0");sec.textContent=String(s).padStart(2,"0");
+wd.textContent=t.toLocaleDateString("en-US",{weekday:"long"});
+md.textContent=t.toLocaleDateString("en-US",{month:"short",day:"numeric"});
+yr.textContent=t.getFullYear();
+}
+upd();setInterval(upd,1000);
+</script></body></html>
