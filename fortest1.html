@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Festival Countdown</title>
+<meta name="description" content="Premium real-time countdown tracker for Dashain and Tihar.">
+<meta name="author" content="Nayan Wagle">
+<meta property="og:title" content="Festival Countdown">
+<meta property="og:description" content="Live tracking for upcoming traditional celebrations.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Festival Countdown 2026",
+  "startDate": "2026-10-11T00:00:00+05:45",
+  "endDate": "2026-11-12T00:00:00+05:45",
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "location": {
+    "@type": "VirtualLocation",
+    "url": "https://festival-countdown.np"
+  },
+  "description": "Real-time countdown to Dashain and Tihar.",
+  "organizer": {
+    "@type": "Person",
+    "name": "Nayan Wagle"
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg-color: #0D1117;
+  --accent-color: #FFD54F;
+  --accent-glow: rgba(255, 213, 79, 0.06);
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.35);
+  --glass-bg: rgba(255, 255, 255, 0.02);
+  --glass-border: rgba(255, 255, 255, 0.07);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Prevent scrolling entirely */
+  position: relative;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ambient-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(550px, 90vw);
+  height: min(550px, 90vh);
+  background: radial-gradient(circle, var(--accent-glow) 0%, rgba(13, 17, 23, 0) 70%);
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+.dhaka-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.01;
+  pointer-events: none;
+  z-index: -2;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z M30 12 L48 30 L30 48 L12 30 Z' fill='%23ffffff' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+.main-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: clamp(12px, 3vh, 40px) 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tabs-container {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  padding: 4px;
+  border-radius: 40px;
+  margin-bottom: clamp(12px, 2.5vh, 28px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.tab {
+  padding: 8px clamp(16px, 3vw, 28px);
+  font-size: clamp(0.75rem, 1.5vh, 0.85rem);
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 30px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.tab.active {
+  color: #0D1117;
+  background: var(--accent-color);
+  box-shadow: 0 0 20px rgba(255, 213, 79, 0.35);
+  font-weight: 700;
+}
+
+h1 {
+  font-size: clamp(1.5rem, 4.5vh, 3.2rem);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.85) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.date {
+  color: var(--text-secondary);
+  font-size: clamp(0.8rem, 2vh, 1.05rem);
+  font-weight: 500;
+  margin-bottom: clamp(16px, 3.5vh, 36px);
+  letter-spacing: 0.5px;
+}
+
+.countdown-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  width: 100%;
+  max-width: 740px;
+  padding: clamp(20px, 5vh, 44px) clamp(12px, 3vw, 28px);
+}
+
+.countdown-display {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(2px, 1.2vw, 12px);
+  width: 100%;
+}
+
+.time-segment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: clamp(48px, 11vw, 115px);
+}
+
+.num {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 6.5vw, 4.6rem);
+  color: var(--accent-color);
+  text-align: center;
+  letter-spacing: -1px;
+  text-shadow: 0 0 30px rgba(255, 213, 79, 0.15);
+  line-height: 1.1;
+}
+
+.colon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(1.3rem, 4.5vw, 3.2rem);
+  color: var(--text-muted);
+  opacity: 0.4;
+  line-height: 1.1;
+  padding-top: 2px;
+  user-select: none;
+}
+
+.segment-label {
+  margin-top: clamp(6px, 1.2vh, 12px);
+  color: var(--text-secondary);
+  font-size: clamp(0.55rem, 1.3vw, 0.75rem);
+  text-transform: uppercase;
+  letter-spacing: clamp(1px, 0.2vw, 1.5px);
+  font-weight: 600;
+  text-align: center;
+}
+
+footer {
+  border-top: 1px solid var(--glass-border);
+  padding: 12px 24px;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  width: 100%;
+}
+
+.footer-content {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-credits {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.footer-credits b {
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+}
+
+.icon-link {
+  color: var(--text-secondary);
+  transition: color 0.3s, transform 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 4px;
+}
+
+.icon-link:hover {
+  color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+#confetti-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Landscape compact layouts for short viewports */
+@media (max-height: 480px) {
+  .main-layout { padding: 8px 20px; }
+  .date { margin-bottom: 8px; }
+  .tabs-container { margin-bottom: 8px; }
+  .countdown-card { padding: 12px 20px; }
+  .segment-label { margin-top: 4px; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+<div class="dhaka-pattern"></div>
+
+<div class="main-layout fade-in">
+  <div class="ambient-glow"></div>
+  
+  <div class="tabs-container">
+    <div id="dBtn" class="tab active">Dashain</div>
+    <div id="tBtn" class="tab">Tihar</div>
+  </div>
+  
+  <h1 id="dynamic-title">Countdown to Dashain</h1>
+  
+  <div class="date">
+    <div id="current-date-display"></div>
+  </div>
+  
+  <div class="countdown-card">
+    <div class="countdown-display">
+      <div class="time-segment">
+        <div id="days" class="num">00</div>
+        <div class="segment-label">Days</div>
+      </div>
+      <div class="colon">:</div>
+      
+      <div class="time-segment">
+        <div id="hrs" class="num">00</div>
+        <div class="segment-label">Hours</div>
+      </div>
+      <div class="colon">:</div>
+      
+      <div class="time-segment">
+        <div id="min" class="num">00</div>
+        <div class="segment-label">Minutes</div>
+      </div>
+      <div class="colon">:</div>
+      
+      <div class="time-segment">
+        <div id="sec" class="num">00</div>
+        <div class="segment-label">Seconds</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-credits">
+      Made With Love by <b>NAYAN WAGLE</b>
+    </div>
+    <div class="social-icons">
+      <!-- Facebook -->
+      <a href="https://www.facebook.com/nayan.wagle.2025" target="_blank" rel="noopener noreferrer" class="icon-link" aria-label="Facebook">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+      </a>
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/krazyy.nayan/?__pwa=1" target="_blank" rel="noopener noreferrer" class="icon-link" aria-label="Instagram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+      </a>
+      <!-- TikTok -->
+      <a href="https://www.tiktok.com/@mrnayan.49" target="_blank" rel="noopener noreferrer" class="icon-link" aria-label="TikTok">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+      </a>
+      <!-- Gmail -->
+      <a href="mailto:nayanwagley214@gmail.com" class="icon-link" aria-label="Gmail">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const f={dashain:new Date("2026-10-11T00:00:00"),tihar:new Date("2026-11-07T00:00:00")};
+let cur="dashain";
+const dBtn=document.getElementById("dBtn"),tBtn=document.getElementById("tBtn");
+const dynamicTitle=document.getElementById("dynamic-title");
+const currentDateDisplay=document.getElementById("current-date-display");
+
+const daysElement = document.getElementById("days");
+const hrsElement = document.getElementById("hrs");
+const minElement = document.getElementById("min");
+const secElement = document.getElementById("sec");
+
+function sel(x){
+  cur=x;
+  dBtn.classList.toggle("active",x==="dashain");
+  tBtn.classList.toggle("active",x==="tihar");
+  dynamicTitle.textContent = "Countdown to " + x.charAt(0).toUpperCase() + x.slice(1);
+  upd();
+}
+dBtn.onclick=()=>sel("dashain");tBtn.onclick=()=>sel("tihar");
+
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let confettiActive = false;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function triggerCelebration() {
+  if (confettiActive) return;
+  confettiActive = true;
+  for (let i = 0; i < 120; i++) {
+    particles.push({
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+      vx: (Math.random() - 0.5) * 14,
+      vy: (Math.random() - 0.5) * 14 - 4,
+      color: ['#FFD54F', '#FFA000', '#FFC107', '#FFFFFF', '#E53935'][Math.floor(Math.random() * 5)],
+      size: Math.random() * 6 + 4,
+      rotation: Math.random() * 360,
+      rSpeed: Math.random() * 8 - 4
+    });
+  }
+  animateConfetti();
+}
+
+function animateConfetti() {
+  if (particles.length === 0) {
+    confettiActive = false;
+    return;
+  }
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = particles.length - 1; i >= 0; i--) {
+    let p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.18; 
+    p.rotation += p.rSpeed;
+    ctx.fillStyle = p.color;
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rotation * Math.PI / 180);
+    ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+    ctx.restore();
+    if (p.y > window.innerHeight || p.x < 0 || p.x > window.innerWidth) {
+      particles.splice(i, 1);
+    }
+  }
+  requestAnimationFrame(animateConfetti);
+}
+
+function upd(){
+  const t=f[cur],n=new Date(),diff=Math.max(0,Math.floor((t-n)/1000));
+  const d=Math.floor(diff/86400),h=Math.floor(diff%86400/3600),m=Math.floor(diff%3600/60),s=diff%60;
+  
+  daysElement.textContent=d;
+  hrsElement.textContent=String(h).padStart(2,"0");
+  minElement.textContent=String(m).padStart(2,"0");
+  secElement.textContent=String(s).padStart(2,"0");
+
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedToday = n.toLocaleDateString('en-US', options).replace(/,/g, ' •');
+  currentDateDisplay.textContent = formattedToday;
+
+  if (diff === 0) {
+    triggerCelebration();
+  }
+}
+upd();
+setInterval(upd,1000);
+</script>
+</body>
+</html>
