@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -317,96 +318,6 @@ footer {
   .countdown-card { padding: 12px 20px; }
   .segment-label { margin-top: 4px; }
 }
-  /* Music Player */
-.music-player {
-    position: fixed;
-    right: 18px;
-    bottom: 75px;
-    z-index: 1000;
-
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    width: 260px;
-    padding: 8px 12px;
-
-    background: rgba(13, 17, 23, 0.92);
-    border: 1px solid var(--glass-border);
-    border-radius: 30px;
-
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-}
-
-.music-button {
-    width: 34px;
-    height: 34px;
-    min-width: 34px;
-
-    border: none;
-    border-radius: 50%;
-
-    background: var(--accent-color);
-    color: #0D1117;
-
-    font-size: 13px;
-    font-weight: bold;
-
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.music-info {
-    flex: 1;
-    min-width: 0;
-    text-align: left;
-}
-
-.music-title {
-    color: var(--text-primary);
-    font-size: 0.72rem;
-    font-weight: 600;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.music-status {
-    color: var(--text-muted);
-    font-size: 0.58rem;
-    margin-top: 2px;
-}
-
-.music-progress {
-    position: absolute;
-    left: 14px;
-    right: 14px;
-    bottom: 3px;
-
-    height: 2px;
-    background: rgba(255,255,255,0.08);
-}
-
-.music-progress-bar {
-    width: 0%;
-    height: 100%;
-    background: var(--accent-color);
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-    .music-player {
-        right: 10px;
-        bottom: 72px;
-        width: 220px;
-    }
 </style>
 </head>
 <body>
@@ -453,41 +364,6 @@ footer {
         <div class="segment-label">Seconds</div>
       </div>
     </div>
-    <!-- Dashain Music Player -->
-
-<div class="music-player">
-
-    <button
-        id="musicButton"
-        class="music-button"
-        type="button"
-        aria-label="Play Dashain song">
-        ▶
-    </button>
-
-    <div class="music-info">
-        <div class="music-title">
-            Dashain Song
-        </div>
-
-        <div id="musicStatus" class="music-status">
-            Tap to play
-        </div>
-    </div>
-
-    <div class="music-progress">
-        <div id="musicProgressBar"
-             class="music-progress-bar">
-        </div>
-    </div>
-
-</div>
-
-<audio
-    id="dashainAudio"
-    preload="none"
-    src="./Dashain-song.mp3">
-</audio>
   </div>
 </div>
 
@@ -612,83 +488,6 @@ function upd(){
 }
 upd();
 setInterval(upd,1000);
-  /* =========================================
-   DASHain MUSIC PLAYER
-========================================= */
-
-const audio = document.getElementById("dashainAudio");
-const musicButton = document.getElementById("musicButton");
-const musicStatus = document.getElementById("musicStatus");
-const progressBar = document.getElementById("musicProgressBar");
-
-musicButton.addEventListener("click", async () => {
-
-    try {
-
-        if (audio.paused) {
-
-            musicStatus.textContent = "Loading...";
-
-            await audio.play();
-
-            musicButton.textContent = "❚❚";
-            musicStatus.textContent = "Playing";
-
-        } else {
-
-            audio.pause();
-
-            musicButton.textContent = "▶";
-            musicStatus.textContent = "Paused";
-
-        }
-
-    } catch (error) {
-
-        musicStatus.textContent = "Song unavailable";
-
-        console.error("Audio error:", error);
-    }
-
-});
-
-
-/* Update progress bar */
-
-audio.addEventListener("timeupdate", () => {
-
-    if (!audio.duration || !isFinite(audio.duration)) {
-        return;
-    }
-
-    const progress =
-        (audio.currentTime / audio.duration) * 100;
-
-    progressBar.style.width = progress + "%";
-
-});
-
-
-/* Song finished */
-
-audio.addEventListener("ended", () => {
-
-    musicButton.textContent = "▶";
-    musicStatus.textContent = "Tap to play again";
-
-    progressBar.style.width = "0%";
-
-});
-
-
-/* Song couldn't load */
-
-audio.addEventListener("error", () => {
-
-    musicButton.textContent = "▶";
-    musicStatus.textContent = "Song unavailable";
-
-});
 </script>
 </body>
 </html>
