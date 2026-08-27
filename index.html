@@ -453,6 +453,41 @@ footer {
         <div class="segment-label">Seconds</div>
       </div>
     </div>
+    <!-- Dashain Music Player -->
+
+<div class="music-player">
+
+    <button
+        id="musicButton"
+        class="music-button"
+        type="button"
+        aria-label="Play Dashain song">
+        ▶
+    </button>
+
+    <div class="music-info">
+        <div class="music-title">
+            Dashain Song
+        </div>
+
+        <div id="musicStatus" class="music-status">
+            Tap to play
+        </div>
+    </div>
+
+    <div class="music-progress">
+        <div id="musicProgressBar"
+             class="music-progress-bar">
+        </div>
+    </div>
+
+</div>
+
+<audio
+    id="dashainAudio"
+    preload="none"
+    src="./Dashain-song.mp3">
+</audio>
   </div>
 </div>
 
